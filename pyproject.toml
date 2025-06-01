@@ -13,4 +13,4 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 [project.scripts]
-fabric-config = "main:main"
+stern = "main:main"

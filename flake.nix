@@ -71,12 +71,11 @@
             preFixup = ''
               makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
             '';
-
           };
 
           apps.default = {
             type = "app";
-            program = "${self.packages.${system}.default}/bin/fabric-config";
+            program = "${self.packages.${system}.default}/bin/stern";
           };
 
           # Defines the devshell, expects a derivation which we will derive via mkShell function
