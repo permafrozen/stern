@@ -5,7 +5,10 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
-    fabric.url = "github:Fabric-Development/fabric";
+    fabric = {
+      url = "github:Fabric-Development/fabric";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -40,22 +43,40 @@
             version = "0.0.1";
             pyproject = true;
             src = ./.;
-            dependencies = with pkgs.python3Packages; [
-              setuptools
+            doCheck = false;
+            dontWrapGApps = true;
+
+            # Native dependencies at build time
+            nativeBuildInputs = with pkgs; [
+              wrapGAppsHook3
+              gtk3
+              gobject-introspection
+              cairo
             ];
 
-            # phases = [ "installPhase" ];
-            # installPhase = ''
-            #   mkdir -p $out/bin
-            #   cat > $out/bin/run-widget << EOF
-            #   #!/bin/sh
-            #   GI_TYPELIB_PATH=$GI_TYPELIB_PATH \
-            #   GDK_PIXBUF_MODULE_FILE="$GDK_PIXBUF_MODULE_FILE" \
-            #   ${python.interpreter} "\$@"
-            #   EOF
-            #   chmod +x $out/bin/run-widget
-            # '';
+            # Dependencies of the python environment on the
+            # target machine.
+            dependencies =
+              with pkgs.python3Packages;
+              [
+                python
+                setuptools
+                wheel
+                pip
+                pygobject3
+                pycairo
+              ]
+              ++ [ pkgs.fabric ];
 
+            preFixup = ''
+              makeWrapperArgs+=("''${gappsWrapperArgs[@]}")
+            '';
+
+          };
+
+          apps.default = {
+            type = "app";
+            program = "${self.packages.${system}.default}/bin/fabric-config";
           };
 
           # Defines the devshell, expects a derivation which we will derive via mkShell function
