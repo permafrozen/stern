@@ -94,6 +94,7 @@
                   loguru
                   pkgconfig
                   python-lsp-server
+                  pygobject-stubs
                 ];
               in
               with pkgs;
