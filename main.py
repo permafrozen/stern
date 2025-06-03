@@ -1,12 +1,9 @@
-import fabric
 from fabric import Application
-from fabric.widgets.label import Label
-from fabric.widgets.window import Window
+from fabric.utils.helpers import get_relative_path
+from stern.statusbar import StatusBar
 
-window = Window(
-    child=Label("Hello World"),
-    all_visible=True
-)
-
-app = Application("stern", window )
-app.run()
+if __name__ == "__main__":
+    bar = StatusBar()
+    app = Application("bar", bar)
+    app.set_stylesheet_from_file(get_relative_path("stern/style.css"))
+    app.run()

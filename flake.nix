@@ -60,6 +60,7 @@
               with pkgs.python3Packages;
               [
                 python
+                psutil
                 setuptools
                 wheel
                 pip
@@ -86,6 +87,7 @@
               let
                 pypkgs = with pkgs.python3Packages; [
                   python
+                  psutil
                   setuptools
                   wheel
                   pip
@@ -95,13 +97,13 @@
                   pkgconfig
                   python-lsp-server
                   pygobject-stubs
+                  types-psutil
                 ];
               in
               with pkgs;
               [
                 fabric
                 ruff
-                basedpyright
                 gtk3
                 cairo
                 gtk-layer-shell
