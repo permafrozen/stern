@@ -13,4 +13,4 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 [project.scripts]
-stern = "main:main"
+stern = "stern.__main__:main"
